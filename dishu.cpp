@@ -7,9 +7,7 @@
 #include <algorithm>
 using namespace std;
 
-// ====================================================================
 // 1️⃣ Base Class: Book
-// ====================================================================
 class Book {
 protected:
     int id;
@@ -18,7 +16,7 @@ protected:
     bool isIssued;
 
 public:
-    static int totalBooks; // static to track total number of books
+    static int totalBooks;
 
     Book(int i, const string& t, const string& a)
         : id(i), title(t), author(a), isIssued(false) {
@@ -39,7 +37,7 @@ public:
              << setw(10) << (isIssued ? "Issued" : "Available") << endl;
     }
 
-    virtual double getFineRate() const = 0; // Virtual Function
+    virtual double getFineRate() const = 0;
 
     void issueBook() {
         if (isIssued)
@@ -55,13 +53,11 @@ public:
 };
 int Book::totalBooks = 0;
 
-// ====================================================================
 // 2️⃣ Derived Classes (Inheritance + Virtual Functions)
-// ====================================================================
 class Novel : public Book {
 public:
     Novel(int i, const string& t, const string& a) : Book(i, t, a) {}
-    double getFineRate() const override { return 2.0; } // Rs/day
+    double getFineRate() const override { return 2.0; } 
 };
 
 class Science : public Book {
@@ -76,9 +72,8 @@ public:
     double getFineRate() const override { return 1.5; }
 };
 
-// ====================================================================
 // 3️⃣ Class: Library (acts like Inventory)
-// ====================================================================
+
 class Library {
     vector<Book*> books;
 
@@ -90,7 +85,6 @@ public:
         books.clear();
     }
 
-    // Add book dynamically
     void addBook(Book* b) {
         if (!b) throw invalid_argument("Null book");
         if (search(b->getId()) != nullptr)
@@ -137,15 +131,12 @@ public:
     vector<Book*>& getBooksRef() { return books; }
 };
 
-// ====================================================================
 // 4️⃣ Operator Overloading: Fine Calculation
-// ====================================================================
 class Fine {
     double amount;
 public:
     Fine(double a = 0.0) : amount(a) {}
 
-    // Operator overloading: add fines together
     Fine operator+(const Fine& f) const {
         return Fine(amount + f.amount);
     }
@@ -155,9 +146,8 @@ public:
     }
 };
 
-// ====================================================================
+
 // 5️⃣ Templates: Generic Report Saver
-// ====================================================================
 template <typename T>
 class ReportGenerator {
 public:
@@ -169,9 +159,9 @@ public:
     }
 };
 
-// ====================================================================
+
 // 6️⃣ File Handling Helper: Save Issued Books
-// ====================================================================
+
 ostream& operator<<(ostream& os, const Book& b) {
     os << left << setw(6) << b.getId()
        << setw(25) << b.getTitle()
@@ -179,15 +169,14 @@ ostream& operator<<(ostream& os, const Book& b) {
     return os;
 }
 
-// ====================================================================
 // 7️⃣ Main Function (Menu-driven)
-// ====================================================================
+
 int main() {
     Library lib;
     ReportGenerator<Book> reporter;
 
     try {
-        // Preload few books
+        
         lib.addBook(new Novel(101, "Pride_and_Prejudice", "Jane Austen"));
         lib.addBook(new Science(201, "Physics_Fundamentals", "H.C. Verma"));
         lib.addBook(new History(301, "World_History", "K. Roberts"));
@@ -292,4 +281,5 @@ int main() {
     } while (choice != 0);
 
     return 0;
+
 }
